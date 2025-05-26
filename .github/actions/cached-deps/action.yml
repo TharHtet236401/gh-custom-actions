@@ -1,15 +1,28 @@
 name: 'Load & Cache Dependencies'
 description: 'Load the dependencies by npm ci and cache them'
+inputs:
+  caching:
+    description: 'Whether to cache the dependencies'
+    required: false
+    default: 'true'
+  greeting:
+    description: 'Greeting message'
+    required: false
+    default: 'true'
 runs:
   using: 'composite'
   steps:
     - name: Cache dependencies
+      if: inputs.caching == 'true'
       id: cache
       uses: actions/cache@v4
       with:
         path: node_modules
         key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+    - name: Greet
+      if: inputs.greeting == 'true'
+      run: echo "Hello, world!"
     - name: Install dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
+      if: steps.cache.outputs.cache-hit != 'true' || inputs.caching != 'true'
       run: npm ci
       shell: bash
