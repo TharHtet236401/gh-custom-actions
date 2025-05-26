@@ -1,5 +1,5 @@
-name: 'Get & Cache Dependencies'
-description: 'Get the dependencies by npm ci and cache them'
+name: 'Load & Cache Dependencies'
+description: 'Load the dependencies by npm ci and cache them'
 runs:
   using: 'composite'
   steps:
